@@ -9,8 +9,8 @@ background = transform.scale(
 ) 
 
 class GameSprite(sprite.Sprite):
-    def __init__(self, img, speed, x, y):
-        self.img = transform.scale(image.load(img), (250,100))
+    def __init__(self, img, speed, x, y, img_width, img_height):
+        self.img = transform.scale(image.load(img), (img_width, img_height))
         self.speed = speed
         self.rect = self.img.get_rect()
         self.rect.x = x
@@ -19,8 +19,8 @@ class GameSprite(sprite.Sprite):
         window.blit(self.img, (self.rect.x, self.rect.y))
 
 class Player(GameSprite):
-    def __init__(self, img, speed, x, y):
-            super().__init__(img, speed, x, y)
+    def __init__(self, img, speed, x, y, img_width, img_height):
+            super().__init__(img, speed, x, y, img_width, img_height)
 
 
     def control(self):
@@ -37,18 +37,46 @@ class Player(GameSprite):
         if keys_pressed[K_DOWN] and self.rect.y < 405:
             self.rect.y += self.speed
 
+
+class Ball(GameSprite):
+    def __init__(self, img, speed, x, y, speed_x, speed_y, img_width, img_height, pon):
+        super().__init__(img, speed, x, y, img_width, img_height)
+        self.speed_x = speed_x
+        self.speed_y = speed_y
+        self.pon = pon
+        
+
+    def kuda(self):
+        if self.pon == 1:
+            self.rect.x += self.speed_x
+            self.rect.y += self.speed_y
+
+        if sprite.collide_rect(ball, player2) and self.pon == 1:
+            self.pon = 2
+
+        if self.pon == 2:
+            self.rect.x -= self.speed_x
+            self.rect.y -= self.speed_y
+        
+        
+
+ball = 'ball.png'
+
 clock = time.Clock()
 FPS = 60
 game = True
 
-player = Player('palka.png', 30, -50, 400)
-player2 = Player('palka.png', 30, 525, 400)
+player = Player('palka.png', 30, 50, 400, 20, 100)
+player2 = Player('palka.png', 30, 600, 400, 20, 100)
+ball = Ball(ball, 70, 350, 200, 3, 3, 50, 50, 1)
 while game:
     window.blit(background,(0, 0))
     player.reset()
     player.control()
     player2.reset()
     player2.control2()
+    ball.reset()
+    ball.kuda()
     for e in event.get():
         if e.type == QUIT:
             game = False
