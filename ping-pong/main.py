@@ -4,7 +4,7 @@ window = display.set_mode((700, 500))
 display.set_caption('ping-pong')  
 
 background = transform.scale(
-    image.load('ping-pong\\es.jpg'),
+    image.load('es.jpg'),
     (700, 500)
 ) 
 
@@ -41,8 +41,8 @@ clock = time.Clock()
 FPS = 60
 game = True
 
-player = Player('ping-pong\\palka.png', 30, -50, 400)
-player2 = Player('ping-pong\\palka.png', 30, 525, 400)
+player = Player('palka.png', 30, -50, 400)
+player2 = Player('palka.png', 30, 525, 400)
 while game:
     window.blit(background,(0, 0))
     player.reset()
