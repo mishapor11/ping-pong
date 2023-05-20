@@ -51,11 +51,24 @@ class Ball(GameSprite):
         self.rect.y += self.speed_y
 
         if sprite.collide_rect(ball, player2):
-            self.speed_x *= -1
-            self.speed_y *= -1
+            self.speed_x = -3
+            self.speed_y = -3
 
-        if self.rect.y <= 0:
-            
+        if self.rect.y == 0:
+            self.speed_x = -3
+            self.speed_y = 3
+
+        if sprite.collide_rect(ball, player):
+            self.speed_x = 3
+            self.speed_y = 3
+
+        if self.rect.y == 450:
+            self.speed_x = 3
+            self.speed_y = -3
+
+    def loss(self):
+        if self.rect.x <= 0:
+            game = False
 
 ball = 'ball.png'
 
@@ -74,6 +87,7 @@ while game:
     player2.control2()
     ball.reset()
     ball.kuda()
+    ball.loss()
     for e in event.get():
         if e.type == QUIT:
             game = False
